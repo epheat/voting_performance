@@ -8,9 +8,21 @@ function setup(){
   createCanvas(400, 400);
   background(0);
 
+  frameRate(30);
+
 }
 
+var time_remaining = 10;
+
 function draw(){
+
+  if (frameCount % 60 == 0) {
+    time_remaining--;
+    //send time_remaining to server
+    socket.emit("time_reduced", {"time": time_remaining});
+    console.log("time remaining " + time_remaining);
+  }
+
   background(0);
 
   var total_color_weight = r_level+g_level+b_level;
@@ -20,6 +32,8 @@ function draw(){
 
   fill(red,green,blue,255);
   rect(50,50,300,300);
+
+
 
 }
 

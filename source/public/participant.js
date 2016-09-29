@@ -1,3 +1,5 @@
+var socket = io('/voting');
+
 
 var red_x = 30/3;
 var red_y = 250/3;
@@ -35,13 +37,13 @@ function setup() {
 
 
 
-  frameRate(.8);
+  frameRate(1);
   textSize(50);
 }
 
 var countdown = 10;
 function draw() {
-  countdown--;
+  // countdown--;
 
   if (countdown == 0) {
     //time's up
@@ -83,3 +85,8 @@ function touchEnded() {
   }
 
 }
+
+socket.on('time_reduced', function(data){
+  console.log("reduce time to exactly " + data.time);
+  countdown = data.time;
+})

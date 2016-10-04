@@ -1,12 +1,12 @@
 var socket = io('/voting');     //http://socket.io/docs/
-var message_state = 0;
 var r_level = 1;
 var g_level = 1;
 var b_level = 1;
 
 function setup(){
-  createCanvas(400, 400);
+  createCanvas(10000, 4000);
   background(0);
+
 
   frameRate(30);
 
@@ -23,7 +23,10 @@ function draw(){
     console.log("time remaining " + time_remaining);
   }
 
+
   background(0);
+
+
 
   var total_color_weight = r_level+g_level+b_level;
   var red = r_level * 255 / total_color_weight;
@@ -31,11 +34,31 @@ function draw(){
   var blue = b_level * 255 / total_color_weight;
 
   fill(red,green,blue,255);
-  rect(50,50,300,300);
+  rect(1000,500,4000,2000);
 
+  fill(255,0,0,255);
+  rect(1000,2500,1333,1000);
 
+  fill(0,255,0,255);
+  rect(2333,2500,1333,1000);
+
+  fill(0,0,255,255);
+  rect(3666,2500,1333,1000);
+
+  textSize(500);
+  fill(0,0,0,255);
+  text("Prance",1050,3100);
+
+  textSize(400);
+  fill(0,0,0,255);
+  text("Wiggle",2400,3100)
+
+  textSize(500);
+  fill(0,0,0,255);
+  text("Jirate",3800,3100)
 
 }
+
 
 socket.on('increase_red', function(){
   console.log("trigger 1 listener fired");

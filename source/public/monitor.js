@@ -13,14 +13,25 @@ function setup(){
 }
 
 var time_remaining = 10;
+var break_time = 5;
 
 function draw(){
 
   if (frameCount % 60 == 0) {
-    time_remaining--;
-    //send time_remaining to server
-    socket.emit("time_reduced", {"time": time_remaining});
-    console.log("time remaining " + time_remaining);
+    if (time_remaining > 0) {
+      time_remaining--;
+
+      //send time_remaining to server
+      socket.emit("time_reduced", {"time": time_remaining});
+      console.log("time remaining " + time_remaining);
+    } else {
+      if (break_time == 0) {
+        time_remaining = 10;
+        break_time = 5;
+      } else {
+        break_time--;
+      }
+    }
   }
 
 

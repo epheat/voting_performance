@@ -11,25 +11,25 @@ var name_spaced_com = io.of('/voting');
 name_spaced_com.on('connection', function (socket) {
   console.log("Client ID"+socket.id+" connected");
 
-  app.get('/trigger_1', function(request,response){
-    // response.json({"status":"success"});
-    response.sendStatus(200);
-    console.log("trigger 1 pressed : red");
-    name_spaced_com.emit('increase_red');
-  })
+  // Antiquated way to get a message from the participant
+  // app.get('/trigger_1', function(request,response){
+  //   // response.json({"status":"success"});
+  //   response.sendStatus(200);
+  //   console.log("trigger 1 pressed : red");
+  //   name_spaced_com.emit('increase_red');
+  // })
 
-  app.get('/trigger_2', function(request,response){
-    // response.json({"status":"success"});
-    response.sendStatus(200);
-    console.log("trigger 2 pressed : green");
-    name_spaced_com.emit('increase_green');
+  socket.on("red_clicked", function() {
+    console.log("red_clicked");
+    name_spaced_com.emit("increase_red");
   })
-
-  app.get('/trigger_3', function(request,response){
-    // response.json({"status":"success"});
-    response.sendStatus(200);
-    console.log("trigger 3 pressed : blue");
-    name_spaced_com.emit('increase_blue');
+  socket.on("green_clicked", function() {
+    console.log("green_clicked");
+    name_spaced_com.emit("increase_green");
+  })
+  socket.on("blue_clicked", function() {
+    console.log("blue_clicked");
+    name_spaced_com.emit("increase_blue");
   })
 
   socket.on("time_reduced", function(data) {

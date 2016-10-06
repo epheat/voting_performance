@@ -32,8 +32,8 @@ name_spaced_com.on('connection', function (socket) {
     name_spaced_com.emit("increase_blue");
   })
 
-  socket.on("time_reduced", function(data) {
-    name_spaced_com.emit('time_reduced', data);
+  socket.on("time_updated", function(data) {
+    name_spaced_com.emit('time_updated', data);
     console.log("tick");
   })
 

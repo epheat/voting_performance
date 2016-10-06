@@ -16,21 +16,21 @@ var allow_button_presses = true;
 var others = [0, 0, 0];
 
 function GreenBox(x, y, width, height, other_weight){
-  strokeWeight(20)
+  strokeWeight(15);
   stroke(0,255,0,150);
   fill(other_weight,255,other_weight,255);
   rect(x, y, width, height, 15);
 }
 
 function RedBox(x, y, width, height, other_weight){
-  strokeWeight(20)
+  strokeWeight(15);
   stroke(255,0,0,200);
   fill(255,other_weight,other_weight,255);
   rect(x, y, width, height, 15);
 }
 
 function BlueBox(x, y, width, height, other_weight){
-  strokeWeight(20)
+  strokeWeight(15);
   stroke(0,0,255,200);
   fill(other_weight,other_weight,255,255);
   rect(x, y, width, height, 15);
@@ -50,6 +50,7 @@ function draw() {
     text_to_display = "Voting ended."
     allow_button_presses = false;
   } else {
+    allow_button_presses = true;
     text_to_display = "Voting ends in: "+countdown;
   }
 
@@ -67,7 +68,7 @@ function draw() {
 
   text(text_to_display, 10, 175/3);
 
-  // reduce the weight of other colors, down to 0
+  // reduce the weight of other colors in buttons, down to 0
   reduce_others_weight();
 
 }
@@ -117,7 +118,7 @@ function animate_bluebox() {
   others[2] = 150;
 }
 
-socket.on('time_reduced', function(data){
-  console.log("reduce time to exactly " + data.time);
+socket.on('time_updated', function(data){
+  console.log("updated time remaining to " + data.time);
   countdown = data.time;
 })

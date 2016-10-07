@@ -3,6 +3,10 @@ var r_level = 1;
 var g_level = 1;
 var b_level = 1;
 
+var VOTING_TIME = 10;
+var BREAK_TIME = 8;
+
+
 var verbs = ["annoy","argue","bang","bathe","beg","bounce","charge","choke","command","confuse","crawl","damage","disapprove","drag","drown","exercise","expand","explode","fade","flap","flash","grab","hover","hunt","itch","gyrate","kneel","launch","mourn","multiply","murder","overflow","peck","pinch","prance","prey","punch","race","scare","scream","shiver","strip","surprise","tickle","trot","tumble","twist","vanish","whip","zoom"];
 var adverbs = ["awkwardly","bravely","carefully","cautiously","cheerfully","coyly","crazily","daintily","defiantly","dramatically","eagerly","elegantly","fiercely","flirtatiously","foolishly","gently","gleefully","gracefully","happily","hardly","hastily","innocently","irritably","jealously","lazily","loosely","madly","mysterioiusly","naturally","nervously","obnoxiously","painfully","politely","poorly","powerfully","quickly","rapidly","roughly","rudely","shakily","sharply","silently","slowly","strongly","suddenly","tediously","victoriously","wildly"];
 
@@ -22,47 +26,54 @@ function setup(){
 
 }
 
-var time_remaining = 10;
-var voting_time_left_bar_width = 880;
+var time_remaining = VOTING_TIME;
+var voting_time_left_bar_width = 980;
 var break_time_left_bar_width = 0;
-var break_time = 5;
+var break_time = BREAK_TIME;
+var phase = 0;
 
 function draw(){
 
-  if ((frameCount % 5 == 0 || frameCount % 3 == 0 || frameCount % 2 == 0) && time_remaining > 0)
-    voting_time_left_bar_width-=2;
-  if (break_time >= 0 && time_remaining == 0 && verb_choices[0] == "") {
-    break_time_left_bar_width -=3;
+  if (phase == 0) {
+    var reduction = 980/VOTING_TIME/60;
+    voting_time_left_bar_width-=reduction;
+  }
+  if (phase == 1) {
+    var reduction = 980/BREAK_TIME/60;
+    break_time_left_bar_width-=reduction;
   }
 
   if (frameCount % 60 == 0) {
-    if (time_remaining > 0) {
+
+    if (time_remaining > 1) {
       time_remaining--;
 
       //send time_remaining to server
       socket.emit("time_updated", {"time": time_remaining});
       console.log("time remaining " + time_remaining);
     } else {
+      phase = 1;
 
-      if (break_time == 5) {
+      if (break_time == BREAK_TIME) {
         get_winning_action();
         reset_choices();
-        break_time_left_bar_width = 900;
-      }
-
-      if (break_time == 0) {
+        break_time_left_bar_width = 980;
+        break_time--;
+      } else if (break_time > 0) {
+        break_time--;
+        console.log("break time remaining " + break_time);
+      } else {
+        phase = 0;
 
         select_new_choices();
-        voting_time_left_bar_width = 880;
+        voting_time_left_bar_width = 980;
 
         r_level = 1;
         g_level = 1;
         b_level = 1;
 
-        time_remaining = 10;
-        break_time = 5;
-      } else {
-        break_time--;
+        time_remaining = VOTING_TIME;
+        break_time = BREAK_TIME;
       }
     }
   }

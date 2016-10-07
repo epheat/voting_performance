@@ -120,5 +120,5 @@ function animate_bluebox() {
 
 socket.on('time_updated', function(data){
   console.log("updated time remaining to " + data.time);
-  countdown = data.time;
+  countdown = data.time-1;
 })
